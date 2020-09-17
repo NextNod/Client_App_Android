@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:id="@+id/textView2"
+        android:id="@+id/textView_welcome"
         android:layout_marginTop="20dp" />
     <LinearLayout
         android:orientation="horizontal"
@@ -37,7 +37,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView1"
+                android:id="@+id/textView_actions"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp" />
         </LinearLayout>
@@ -52,13 +52,13 @@
                 android:text="Send Message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/button1"
+                android:id="@+id/button_sendMessage"
                 android:layout_marginRight="20dp" />
             <Button
                 android:text="View message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/button2"
+                android:id="@+id/button_viewMessage"
                 android:layout_marginRight="20dp" />
         </LinearLayout>
     </LinearLayout>

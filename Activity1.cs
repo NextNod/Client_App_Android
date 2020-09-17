@@ -27,9 +27,9 @@ namespace Client_App_Android
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.layout1);
 
-            Send_button = FindViewById<Button>(Resource.Id.button1);
-            View_button = FindViewById<Button>(Resource.Id.button2);
-            username = FindViewById<TextView>(Resource.Id.textView2);
+            Send_button = FindViewById<Button>(Resource.Id.button_sendMessage);
+            View_button = FindViewById<Button>(Resource.Id.button_viewMessage);
+            username = FindViewById<TextView>(Resource.Id.textView_welcome);
 
             var keys = Intent.GetStringArrayListExtra("key");
             key = keys[0];

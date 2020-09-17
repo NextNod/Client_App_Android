@@ -24,14 +24,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:id="@+id/textView1"
+                android:id="@+id/textView_to"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp" />
             <EditText
                 android:inputType="textMultiLine"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/editText1" />
+                android:id="@+id/editText_to" />
         </LinearLayout>
         <TextView
             android:text="Message:"
@@ -39,18 +39,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:id="@+id/textView2"
+            android:id="@+id/textView_message"
             android:layout_marginTop="20dp" />
         <EditText
             android:inputType="textMultiLine"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/editText2" />
+            android:id="@+id/editText_message" />
         <Button
             android:text="Send"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/button1"
+            android:id="@+id/button_send"
             android:layout_marginTop="20dp" />
         <TextView
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -58,7 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@android:color/holo_red_light"
-            android:id="@+id/textView3" />
+            android:id="@+id/textView_err" />
     </LinearLayout>
 
 </LinearLayout>

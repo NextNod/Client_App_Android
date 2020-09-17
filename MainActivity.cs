@@ -30,12 +30,12 @@ namespace Client_App_Android
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
 
-            Login_et = FindViewById<EditText>(Resource.Id.editText1);
-            Pass = FindViewById<EditText>(Resource.Id.editText2);
-            Email = FindViewById<EditText>(Resource.Id.autoCompleteTextView1);
-            Enter = FindViewById<Button>(Resource.Id.button1);
-            Register = FindViewById<RadioButton>(Resource.Id.radioButton1);
-            Login_rb = FindViewById<RadioButton>(Resource.Id.radioButton2);
+            Login_et = FindViewById<EditText>(Resource.Id.editText_login);
+            Pass = FindViewById<EditText>(Resource.Id.editText_pass);
+            Email = FindViewById<EditText>(Resource.Id.autoCompleteTextView_email);
+            Enter = FindViewById<Button>(Resource.Id.button_Enter);
+            Register = FindViewById<RadioButton>(Resource.Id.radioButton_reg);
+            Login_rb = FindViewById<RadioButton>(Resource.Id.radioButton_log);
             linearLayout = FindViewById<LinearLayout>(Resource.Id.linearLayout3);
 
             if (Register.Checked)
@@ -46,7 +46,6 @@ namespace Client_App_Android
             {
                 linearLayout.Visibility = Android.Views.ViewStates.Invisible;
             }
-
 
             Register.Click += (o, e) => Reg();
             Login_rb.Click += (o, e) => Reg();
@@ -113,15 +112,12 @@ namespace Client_App_Android
 
                     if (err == "Err")
                     {
-                        FindViewById<TextView>(Resource.Id.textView3).Text = "Error";
+                        FindViewById<TextView>(Resource.Id.textView_err_log).Text = "Error";
                     }
                 }
                 else
                 {
-                    List<string> vs = new List<string>();
-                    vs.Add(key);
-                    vs.Add(Login_et.Text);
-                    navigation(vs, typeof(Activity1), "key");
+                    Actions(Login_et.Text);
                 }
 
                 stream.Close();
@@ -129,7 +125,7 @@ namespace Client_App_Android
             }
             catch (Exception ex)
             {
-                FindViewById<TextView>(Resource.Id.textView3).Text = ex.Message;
+                FindViewById<TextView>(Resource.Id.textView_err_log).Text = ex.Message;
             }
         }
 
@@ -139,6 +135,20 @@ namespace Client_App_Android
             stream.Read(vs, 0, vs.Length);
             return Encoding.UTF8.GetString(vs);
         }
+
+        protected void Actions(string log) 
+        {
+            SetContentView(Resource.Layout.layout1);
+
+            Button button_Send = FindViewById<Button>(Resource.Id.button_sendMessage);
+            Button button_View = FindViewById<Button>(Resource.Id.button_viewMessage);
+            TextView textView = FindViewById<TextView>(Resource.Id.textView_welcome);
+
+            textView.Text = "Welcome back " + log;
+
+            button_Send.Click += (o, e) => ;
+            button_View.Click += (o, e) => ;
+        } 
 
         protected void sendData(NetworkStream stream, string data)
         {
