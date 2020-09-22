@@ -8,35 +8,33 @@ using System.Net.Sockets;
 using System.Text;
 using System;
 using System.Collections.Generic;
+using Android.Views;
 
 namespace Client_App_Android
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true)]
     public class MainActivity : AppCompatActivity
     {
-        EditText Login_et;
-        EditText Pass;
-        EditText Email;
-        Button Enter;
-        RadioButton Register;
-        RadioButton Login_rb;
-        LinearLayout linearLayout;
-
         string key;
         
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
+            main();
+        }
+
+        protected void main() 
+        {
             SetContentView(Resource.Layout.activity_main);
 
-            Login_et = FindViewById<EditText>(Resource.Id.editText1);
-            Pass = FindViewById<EditText>(Resource.Id.editText2);
-            Email = FindViewById<EditText>(Resource.Id.autoCompleteTextView1);
-            Enter = FindViewById<Button>(Resource.Id.button1);
-            Register = FindViewById<RadioButton>(Resource.Id.radioButton1);
-            Login_rb = FindViewById<RadioButton>(Resource.Id.radioButton2);
-            linearLayout = FindViewById<LinearLayout>(Resource.Id.linearLayout3);
+            EditText Login_et = FindViewById<EditText>(Resource.Id.editText1);
+            EditText Pass = FindViewById<EditText>(Resource.Id.editText2);
+            EditText Email = FindViewById<EditText>(Resource.Id.editText3);
+            Button Enter = FindViewById<Button>(Resource.Id.button1);
+            RadioButton Register = FindViewById<RadioButton>(Resource.Id.radioButton1);
+            RadioButton Login_rb = FindViewById<RadioButton>(Resource.Id.radioButton2);
+            LinearLayout linearLayout = FindViewById<LinearLayout>(Resource.Id.linearLayout3);
 
             if (Register.Checked)
             {
@@ -48,58 +46,85 @@ namespace Client_App_Android
             }
 
 
-            Register.Click += (o, e) => Reg();
-            Login_rb.Click += (o, e) => Reg();
-            Enter.Click += (o, e) => Event();
+            Register.Click += (o, e) => Reg(Register, Login_rb, linearLayout, false);
+            Login_rb.Click += (o, e) => Reg(Register, Login_rb, linearLayout, true);
+            Enter.Click += (o, e) => Event(Register, Login_et, Pass, Email);
         }
 
-        protected void Reg()
+        public override bool OnCreateOptionsMenu(IMenu menu) 
         {
-            if (Register.Checked)
+            MenuInflater.Inflate(Resource.Layout.menu1, menu);
+            return base.OnCreateOptionsMenu(menu);
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            switch (item.ItemId)
             {
-                linearLayout.Visibility = Android.Views.ViewStates.Visible;
+                case Resource.Id.action_search:
+                {
+                    // add your code  
+                    return true;
+                }
             }
-            else
+
+            return base.OnOptionsItemSelected(item);
+        }
+
+        protected void Reg(RadioButton reg, RadioButton log, LinearLayout linear, bool logrb)
+        {
+            if (logrb)
             {
-                linearLayout.Visibility = Android.Views.ViewStates.Invisible;
+                reg.Checked = false;
+                log.Checked = true;
+                linear.Visibility = Android.Views.ViewStates.Invisible;
+            }
+            else 
+            {
+                reg.Checked = true;
+                log.Checked = false;
+                linear.Visibility = Android.Views.ViewStates.Visible;
             }
         }
 
-        protected void Event()
+        protected void Event(RadioButton radio, EditText log, EditText pass, EditText email)
         {
             try
             {
                 TcpClient client = new TcpClient("nextrun.mykeenetic.by", 801);
                 NetworkStream stream = client.GetStream();
 
-                if (Register.Checked)
+                if (radio.Checked)
                 {
                     sendData(stream, "reg");
                     getData(stream);
-                    sendData(stream, Login_et.Text);
+                    sendData(stream, log.Text);
                     getData(stream);
-                    sendData(stream, Pass.Text);
+                    sendData(stream, pass.Text);
                     getData(stream);
-                    sendData(stream, Email.Text);
+                    sendData(stream, email.Text);
                     getData(stream);
+
+                    stream.Close();
+                    client.Close();
 
                     client = new TcpClient("nextrun.mykeenetic.by", 801);
                     stream = client.GetStream();
 
                     sendData(stream, "log");
                     getData(stream);
-                    sendData(stream, Login_et.Text);
+                    sendData(stream, log.Text);
                     getData(stream);
-                    sendData(stream, Pass.Text);
+                    sendData(stream, pass.Text);
                     key = getData(stream);
                 }
                 else
                 {
                     sendData(stream, "log");
                     getData(stream);
-                    sendData(stream, Login_et.Text);
+                    sendData(stream, log.Text);
                     getData(stream);
-                    sendData(stream, Pass.Text);
+                    sendData(stream, pass.Text);
                     key = getData(stream);
                 }
 
@@ -114,18 +139,16 @@ namespace Client_App_Android
                     if (err == "Err")
                     {
                         FindViewById<TextView>(Resource.Id.textView3).Text = "Error";
+                        stream.Close();
+                        client.Close();
+                        return;
                     }
-                }
-                else
-                {
-                    List<string> vs = new List<string>();
-                    vs.Add(key);
-                    vs.Add(Login_et.Text);
-                    navigation(vs, typeof(Activity1), "key");
                 }
 
                 stream.Close();
                 client.Close();
+                // Переход
+                layout1();
             }
             catch (Exception ex)
             {
@@ -147,11 +170,65 @@ namespace Client_App_Android
             stream.Write(vs, 0, vs.Length);
         }
 
-        protected void navigation(List<string> vs, Type type, string name)
+        protected void layout1() 
         {
-            var intent = new Intent(this, type);
-            intent.PutStringArrayListExtra(name, vs);
-            StartActivity(intent);
+            SetContentView(Resource.Layout.layout1);
+
+            Button sendButton = FindViewById<Button>(Resource.Id.sendButton);
+            Button viewButton = FindViewById<Button>(Resource.Id.viewButton);
+
+            sendButton.Click += (o, e) => sendMessage();
+            viewButton.Click += (o, e) => viewMessage();
+        }
+
+        protected void sendMessage() 
+        {
+            SetContentView(Resource.Layout.Send);
+
+            FindViewById<Button>(Resource.Id.sendMessageButton).Click += (o, e) => {
+                string to = FindViewById<TextView>(Resource.Id.ed_to).Text;
+                string message = FindViewById<TextView>(Resource.Id.et_message).Text;
+                Send(to, message);
+            };
+        }
+
+        protected void Send(string to, string message) 
+        {
+            TcpClient client = new TcpClient("nextrun.mykeenetic.by", 801);
+            NetworkStream stream = client.GetStream();
+
+            sendData(stream, "send");
+            getData(stream);
+            sendData(stream, key);
+            getData(stream);
+            sendData(stream, to);
+            getData(stream);
+            sendData(stream, message);
+            getData(stream);
+
+            stream.Close();
+            client.Close();
+
+            Toast toast = Toast.MakeText(BaseContext, "Message sendet!", ToastLength.Long);
+            layout1();
+        }
+
+        protected void viewMessage() 
+        {
+            SetContentView(Resource.Layout.Read);
+
+            TcpClient client = new TcpClient("nextrun.mykeenetic.by", 801);
+            NetworkStream stream = client.GetStream();
+
+            sendData(stream, "messages");
+            getData(stream);
+            sendData(stream, key);
+            FindViewById<TextView>(Resource.Id.messagesView).Text = getData(stream);
+
+            stream.Close();
+            client.Close();
+
+            FindViewById<Button>(Resource.Id.back_to_act).Click += (o, e) => layout1();
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)

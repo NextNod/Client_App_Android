@@ -52,13 +52,17 @@
                 android:text="Send Message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/button1"
+                android:id="@+id/sendButton"
+                android:background="@drawable/buttonstyle"
+                android:textColor="#f3f3f3"
                 android:layout_marginRight="20dp" />
             <Button
                 android:text="View message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/button2"
+                android:background="@drawable/buttonstyle"
+                android:textColor="#f3f3f3"
+                android:id="@+id/viewButton"
                 android:layout_marginRight="20dp" />
         </LinearLayout>
     </LinearLayout>

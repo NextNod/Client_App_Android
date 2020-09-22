@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -9,7 +10,9 @@
         android:minHeight="25px"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/linearLayout1" >
+        android:id="@+id/linearLayout1"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
         <LinearLayout
             android:orientation="horizontal"
             android:minWidth="25px"
@@ -26,12 +29,13 @@
                 android:gravity="center_vertical"
                 android:id="@+id/textView1"
                 android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp" />
+                android:layout_marginRight="10dp" />
             <EditText
-                android:inputType="textMultiLine"
+                android:inputType="text"
+                android:background="@drawable/edittextstyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/editText1" />
+                android:id="@+id/ed_to" />
         </LinearLayout>
         <TextView
             android:text="Message:"
@@ -40,18 +44,29 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:id="@+id/textView2"
-            android:layout_marginTop="20dp" />
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp" />
         <EditText
             android:inputType="textMultiLine"
+            android:background="@drawable/edittextstyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/editText2" />
+            android:id="@+id/et_message" />
         <Button
             android:text="Send"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/button1"
-            android:layout_marginTop="20dp" />
+            android:id="@+id/sendMessageButton"
+            android:layout_gravity="right"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="50dp"
+            android:textAllCaps="false"
+            android:elevation="6dp"
+            android:stateListAnimator="@null"
+            android:translationY="4dp"
+            android:textColor="#f3f3f3"
+            android:background="@drawable/buttonstyle"
+            android:layout_marginLeft="50dp" />
         <TextView
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:gravity="center_horizontal"

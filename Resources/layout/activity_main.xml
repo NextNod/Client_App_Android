@@ -28,12 +28,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:id="@+id/textView2" />
+                android:id="@+id/textView2"
+                android:layout_marginRight="34.2dp"
+                android:layout_marginLeft="10dp" />
             <EditText
                 android:inputType="textMultiLine"
+                android:background="@drawable/edittextstyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/editText1" />
+                android:id="@+id/editText1"
+                android:layout_marginRight="10dp" />
         </LinearLayout>
         <LinearLayout
             android:orientation="horizontal"
@@ -48,17 +52,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:id="@+id/textView1" />
+                android:id="@+id/textView1"
+                android:layout_marginLeft="10dp" />
 
             <EditText
-                android:inputType="textMultiLine"
+                android:inputType="textEmailAddress"
+                android:background="@drawable/edittextstyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/editText2" />
+                android:id="@+id/editText2"
+                android:layout_marginRight="10dp" />
         </LinearLayout>
         <LinearLayout
             android:orientation="horizontal"
-            android:visibility="invisible"
+            android:visibility="visible"
             android:minWidth="25px"
             android:minHeight="25px"
             android:layout_width="match_parent"
@@ -70,33 +77,52 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="fill_vertical"
-                android:id="@+id/textView4" />
-            <AutoCompleteTextView
+                android:id="@+id/textView4"
+                android:layout_marginLeft="10dp" />
+            <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/autoCompleteTextView1" />
+                android:background="@drawable/edittextstyle"
+                android:id="@+id/editText3"
+                android:layout_marginLeft="35dp"
+                android:layout_marginRight="10dp" />
         </LinearLayout>
 
         <Button
-            android:text="Button"
+            android:text="Enter"
+            android:background="@drawable/buttonstl"
+            android:textColor="#f1f1f1"
+            android:elevation="6dp"
+            android:stateListAnimator="@null"
+            android:translationY="4dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="55sp"
             android:id="@+id/button1"
             android:layout_gravity="center"
-            android:scrollbars="none" />
-        <RadioButton
-            android:layout_width="wrap_content"
+            android:scrollbars="none"
+            android:layout_marginRight="80dp"
+            android:layout_marginLeft="80dp" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="Register"
-            android:layout_gravity="center"
-            android:id="@+id/radioButton1"/>
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Login"
-            android:layout_gravity="center"
-            android:id="@+id/radioButton2" />
+            android:gravity="center"
+            android:id="@+id/linearLayout4"
+            android:layout_marginTop="20dp">
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:checked="true"
+                android:text="Register"
+                android:id="@+id/radioButton1"/>
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Login"
+                android:id="@+id/radioButton2" />
+        </LinearLayout>
         <TextView
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_width="match_parent"
@@ -104,5 +130,4 @@
             android:gravity="center"
             android:id="@+id/textView3" />
     </RadioGroup>
-
 </RelativeLayout>

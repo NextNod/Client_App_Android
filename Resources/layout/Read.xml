@@ -10,11 +10,20 @@
         android:layout_height="wrap_content"
         android:minWidth="25px"
         android:minHeight="25px"
-        android:id="@+id/textView1" />
+        android:id="@+id/messagesView"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp" />
     <Button
         android:text="Back"
+        android:background="@drawable/buttonstyle"
+        android:textColor="#f3f3f3"
+        android:elevation="6dp"
+        android:stateListAnimator="@null"
+        android:translationY="4dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/button1" />
+        android:id="@+id/back_to_act"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp" />
 
 </LinearLayout>
