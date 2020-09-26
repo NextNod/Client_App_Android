@@ -40,11 +40,12 @@
                     android:id="@+id/textView1"
                     android:layout_marginLeft="6dp" />
             </LinearLayout>
-            <AutoCompleteTextView
+            <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/edittextstyle"
-                android:id="@+id/autoCompleteTextView1" />
+                android:id="@+id/sAddres"
+                android:inputType="text" />
         </LinearLayout>
         <LinearLayout
             android:orientation="vertical"
@@ -71,11 +72,12 @@
                     android:id="@+id/textView2"
                     android:layout_marginLeft="10dp" />
             </LinearLayout>
-            <AutoCompleteTextView
+            <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/edittextstyle"
-                android:id="@+id/autoCompleteTextView2" />
+                android:id="@+id/sPort"
+                android:inputType="text" />
         </LinearLayout>
         <LinearLayout
             android:orientation="horizontal"

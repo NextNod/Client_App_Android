@@ -16,7 +16,9 @@ namespace Client_App_Android
     public class MainActivity : AppCompatActivity
     {
         string key;
-        
+        string server = "nextrun.mykeenetic.by";
+        int port = 801;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -63,12 +65,39 @@ namespace Client_App_Android
             {
                 case Resource.Id.action_search:
                 {
-                    // add your code  
+                    Settings(); 
                     return true;
                 }
             }
 
             return base.OnOptionsItemSelected(item);
+        }
+
+        public void Settings() 
+        {
+            SetContentView(Resource.Layout.Settings);
+
+            FindViewById<Button>(Resource.Id.backToMain).Click += (o, e) => layout1();
+            FindViewById<Button>(Resource.Id.defaultButton).Click += (o, e) =>
+            {
+                server = "nextrun.mykeenetic.by";
+                port = 801;
+
+                Toast toast = Toast.MakeText(BaseContext, "Settings saved!", ToastLength.Short);
+                toast.Show();
+
+                layout1();
+            };
+            FindViewById<Button>(Resource.Id.Save_settings).Click += (o, e) =>
+            {
+                server = FindViewById<EditText>(Resource.Id.sAddres).Text;
+                port = Convert.ToInt32(FindViewById<EditText>(Resource.Id.sPort).Text);
+
+                Toast toast = Toast.MakeText(BaseContext, "Settings saved!", ToastLength.Short);
+                toast.Show();
+
+                layout1();
+            };
         }
 
         protected void Reg(RadioButton reg, RadioButton log, LinearLayout linear, bool logrb)
@@ -91,7 +120,7 @@ namespace Client_App_Android
         {
             try
             {
-                TcpClient client = new TcpClient("nextrun.mykeenetic.by", 801);
+                TcpClient client = new TcpClient(server, port);
                 NetworkStream stream = client.GetStream();
 
                 if (radio.Checked)
@@ -108,7 +137,7 @@ namespace Client_App_Android
                     stream.Close();
                     client.Close();
 
-                    client = new TcpClient("nextrun.mykeenetic.by", 801);
+                    client = new TcpClient(server, port);
                     stream = client.GetStream();
 
                     sendData(stream, "log");
@@ -194,7 +223,7 @@ namespace Client_App_Android
 
         protected void Send(string to, string message) 
         {
-            TcpClient client = new TcpClient("nextrun.mykeenetic.by", 801);
+            TcpClient client = new TcpClient(server, port);
             NetworkStream stream = client.GetStream();
 
             sendData(stream, "send");
@@ -217,7 +246,7 @@ namespace Client_App_Android
         {
             SetContentView(Resource.Layout.Read);
 
-            TcpClient client = new TcpClient("nextrun.mykeenetic.by", 801);
+            TcpClient client = new TcpClient(server, port);
             NetworkStream stream = client.GetStream();
 
             sendData(stream, "messages");
