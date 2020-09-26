@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+       android:insetBottom="5dp"
+       android:insetLeft="5dp"
+       android:insetRight="5dp"
+       android:insetTop="5dp">
+  <ripple android:color="#bebebe">
+    <item>
+      <shape android:shape="rectangle">
+        <corners android:topRightRadius="5dp"
+                 android:bottomRightRadius="5dp"
+                 android:bottomLeftRadius="20dp"
+                 android:topLeftRadius="5dp"/>
+        <gradient android:endColor="#0014ff"
+                  android:startColor="#ff0000">
+        </gradient>
+      </shape>
+    </item>
+  </ripple>
+</inset>
