@@ -21,63 +21,80 @@
             android:minHeight="25px"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/linearLayout2"
+            android:background="@drawable/border"
+            android:id="@+id/linearLayout7"
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp">
             <LinearLayout
                 android:orientation="vertical"
                 android:minWidth="25px"
                 android:minHeight="25px"
-                android:layout_width="80dp"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:id="@+id/linearLayout4">
-                <TextView
-                    android:text="Server: "
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textView1"
-                    android:layout_marginLeft="6dp" />
-            </LinearLayout>
-            <EditText
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/edittextstyle"
-                android:id="@+id/sAddres"
-                android:inputType="text" />
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="vertical"
-            android:minWidth="25px"
-            android:minHeight="25px"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:id="@+id/linearLayout3">
+                android:layout_height="wrap_content"
+                android:id="@+id/linearLayout2"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:minWidth="25px"
+                    android:minHeight="25px"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:id="@+id/linearLayout4">
+                    <TextView
+                        android:text="Server: "
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView1"
+                        android:layout_marginLeft="6dp" />
+                </LinearLayout>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/edittextstyle"
+                    android:id="@+id/sAddres"
+                    android:stateListAnimator="@null"
+                    android:translationZ="10dp"
+                    android:elevation="10dp"
+                    android:inputType="text" />
+            </LinearLayout>
             <LinearLayout
                 android:orientation="vertical"
                 android:minWidth="25px"
                 android:minHeight="25px"
-                android:layout_width="80dp"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:id="@+id/linearLayout5">
-                <TextView
-                    android:text="Port:"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textView2"
-                    android:layout_marginLeft="10dp" />
-            </LinearLayout>
-            <EditText
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/edittextstyle"
-                android:id="@+id/sPort"
-                android:inputType="text" />
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:id="@+id/linearLayout3">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:minWidth="25px"
+                    android:minHeight="25px"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:id="@+id/linearLayout5">
+                    <TextView
+                        android:text="Port:"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView2"
+                        android:layout_marginLeft="10dp" />
+                </LinearLayout>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/edittextstyle"
+                    android:id="@+id/sPort"
+                    android:stateListAnimator="@null"
+                    android:translationZ="10dp"
+                    android:elevation="10dp"
+                    android:inputType="text" />
+            </LinearLayout>
         </LinearLayout>
         <LinearLayout
             android:orientation="horizontal"
@@ -87,24 +104,26 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:id="@+id/linearLayout6"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp">
             <Button
                 android:text="Back"
-                android:layout_width="110"
+                android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:textColor="#f3f3f3"
                 android:background="@drawable/backbutton"
                 android:id="@+id/backToMain" />
             <Button
                 android:text="Default server"
-                android:layout_width="160dp"
+                android:layout_width="140dp"
                 android:layout_height="match_parent"
                 android:textColor="#f3f3f3"
                 android:background="@drawable/midlebutton"
                 android:id="@+id/defaultButton" />
             <Button
                 android:text="Save"
-                android:layout_width="110"
+                android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:id="@+id/Save_settings"
                 android:background="@drawable/nextbutton"

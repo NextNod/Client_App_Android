@@ -18,6 +18,8 @@ namespace Client_App_Android
         string key;
         string server = "nextrun.mykeenetic.by";
         int port = 801;
+        string dserver = "nextrun.mykeenetic.by";
+        int dport = 801;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -68,6 +70,21 @@ namespace Client_App_Android
                     Settings(); 
                     return true;
                 }
+                case Resource.Id.action_search1:
+                {
+                    item.SetChecked(!item.IsChecked);
+                        if (item.IsChecked)
+                        {
+                            server = "nextrun.mykeenetic.by";
+                            port = 801;
+                        }
+                        else 
+                        {
+                            server = dserver;
+                            port = dport;
+                        }
+                    return true;
+                }
             }
 
             return base.OnOptionsItemSelected(item);
@@ -90,8 +107,8 @@ namespace Client_App_Android
             };
             FindViewById<Button>(Resource.Id.Save_settings).Click += (o, e) =>
             {
-                server = FindViewById<EditText>(Resource.Id.sAddres).Text;
-                port = Convert.ToInt32(FindViewById<EditText>(Resource.Id.sPort).Text);
+                dserver = FindViewById<EditText>(Resource.Id.sAddres).Text;
+                dport = Convert.ToInt32(FindViewById<EditText>(Resource.Id.sPort).Text);
 
                 Toast toast = Toast.MakeText(BaseContext, "Settings saved!", ToastLength.Short);
                 toast.Show();
