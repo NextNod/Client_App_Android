@@ -73,16 +73,16 @@ namespace Client_App_Android
                 case Resource.Id.action_search1:
                 {
                     item.SetChecked(!item.IsChecked);
-                        if (item.IsChecked)
-                        {
-                            server = "nextrun.mykeenetic.by";
-                            port = 801;
-                        }
-                        else 
-                        {
-                            server = dserver;
-                            port = dport;
-                        }
+                    if (item.IsChecked)
+                    {
+                        server = "nextrun.mykeenetic.by";
+                        port = 801;
+                    }
+                    else 
+                    {
+                        server = dserver;
+                        port = dport;
+                    }
                     return true;
                 }
             }
@@ -94,7 +94,8 @@ namespace Client_App_Android
         {
             SetContentView(Resource.Layout.Settings);
 
-            FindViewById<Button>(Resource.Id.backToMain).Click += (o, e) => layout1();
+            FindViewById<Button>(Resource.Id.backToMain).Click += (o, e) => main();
+
             FindViewById<Button>(Resource.Id.defaultButton).Click += (o, e) =>
             {
                 server = "nextrun.mykeenetic.by";
@@ -105,6 +106,7 @@ namespace Client_App_Android
 
                 layout1();
             };
+
             FindViewById<Button>(Resource.Id.Save_settings).Click += (o, e) =>
             {
                 dserver = FindViewById<EditText>(Resource.Id.sAddres).Text;
@@ -225,6 +227,7 @@ namespace Client_App_Android
 
             sendButton.Click += (o, e) => sendMessage();
             viewButton.Click += (o, e) => viewMessage();
+            FindViewById<Button>(Resource.Id.test).Click += (o, e) => SetContentView(Resource.Layout.ListOfMessages);
         }
 
         protected void sendMessage() 

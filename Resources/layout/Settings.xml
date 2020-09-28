@@ -56,8 +56,8 @@
                     android:background="@drawable/edittextstyle"
                     android:id="@+id/sAddres"
                     android:stateListAnimator="@null"
-                    android:translationZ="10dp"
-                    android:elevation="10dp"
+                    android:translationZ="5dp"
+                    android:elevation="5dp"
                     android:inputType="text" />
             </LinearLayout>
             <LinearLayout
@@ -91,8 +91,8 @@
                     android:background="@drawable/edittextstyle"
                     android:id="@+id/sPort"
                     android:stateListAnimator="@null"
-                    android:translationZ="10dp"
-                    android:elevation="10dp"
+                    android:translationZ="5dp"
+                    android:elevation="5dp"
                     android:inputType="text" />
             </LinearLayout>
         </LinearLayout>
