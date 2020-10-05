@@ -8,8 +8,7 @@ using System.Net.Sockets;
 using System.Text;
 using System;
 using Android.Support.V4.App;
-using TaskStackBuilder = Android.Support.V4.App.TaskStackBuilder;
-using System.Collections.Generic;
+using System.Security.Cryptography;
 using Android.Views;
 
 namespace Client_App_Android
@@ -147,6 +146,7 @@ namespace Client_App_Android
             {
                 TcpClient client = new TcpClient(server, port);
                 NetworkStream stream = client.GetStream();
+                bool reg = false;
 
                 if (radio.Checked)
                 {
@@ -164,45 +164,46 @@ namespace Client_App_Android
 
                     client = new TcpClient(server, port);
                     stream = client.GetStream();
-
-                    sendData(stream, "log");
-                    getData(stream);
-                    sendData(stream, log.Text);
-                    getData(stream);
-                    sendData(stream, pass.Text);
-                    key = getData(stream);
+                    reg = true;
                 }
-                else
+                else if(!radio.Checked || reg)
                 {
                     sendData(stream, "log");
                     getData(stream);
                     sendData(stream, log.Text);
-                    getData(stream);
-                    sendData(stream, pass.Text);
-                    key = getData(stream);
-                }
+                    string msg = getData(stream);
 
-                if (key[0] == '{')
-                {
-                    string err = "";
-                    for (int i = 1; i < 4; i++)
+                    if (msg.Contains("{ER1}"))
                     {
-                        err += key[i];
-                    }
+                        Toast toast = Toast.MakeText(BaseContext, "Error!", ToastLength.Short);
+                        toast.Show();
 
-                    if (err == "Err")
-                    {
-                        FindViewById<TextView>(Resource.Id.textView3).Text = "Error";
                         stream.Close();
                         client.Close();
+
                         return;
                     }
+
+                    sendData(stream, ComputePasswordHash(pass.Text, msg));
+                    msg = getData(stream);
+
+                    if (msg.Contains("{ER1}")) 
+                    {
+                        Toast toast = Toast.MakeText(BaseContext, "Error!", ToastLength.Short);
+                        toast.Show();
+
+                        stream.Close();
+                        client.Close();
+
+                        return;
+                    }
+
+                    key = msg;
                 }
 
                 stream.Close();
                 client.Close();
-                // Переход
-                layout1();
+                layout1(); // Переход
             }
             catch (Exception ex)
             {
@@ -286,6 +287,9 @@ namespace Client_App_Android
             FindViewById<Button>(Resource.Id.back_to_act).Click += (o, e) => layout1();
         }
 
+
+        // Подвал!
+
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -322,11 +326,17 @@ namespace Client_App_Android
                           .SetSmallIcon(Resource.Drawable.Notifi)
                           .SetContentText(content); // the message to display.
 
-            // Finally, publish the notification:
             var notificationManager = NotificationManagerCompat.From(this);
             notificationManager.Notify(1000, builder.Build());
+        }
 
-            // Increment the button press count:
+        string ComputePasswordHash(string password, string salt)
+        {
+            SHA256 SHA = new SHA256Managed();
+
+            if (password == null || salt == null)
+                return null;
+            return BitConverter.ToString(SHA.ComputeHash(Encoding.UTF8.GetBytes(password + salt))).Replace("-", "").ToLower();
         }
     }
 }
