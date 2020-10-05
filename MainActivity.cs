@@ -7,6 +7,8 @@ using Android.Content;
 using System.Net.Sockets;
 using System.Text;
 using System;
+using Android.Support.V4.App;
+using TaskStackBuilder = Android.Support.V4.App.TaskStackBuilder;
 using System.Collections.Generic;
 using Android.Views;
 
@@ -16,8 +18,10 @@ namespace Client_App_Android
     public class MainActivity : AppCompatActivity
     {
         string key;
+
         string server = "nextrun.mykeenetic.by";
         int port = 801;
+
         string dserver = "nextrun.mykeenetic.by";
         int dport = 801;
 
@@ -49,6 +53,8 @@ namespace Client_App_Android
                 linearLayout.Visibility = Android.Views.ViewStates.Invisible;
             }
 
+            CreateNotificationChannel();
+            SendNotify("Hello!", "This is my firts notification!");
 
             Register.Click += (o, e) => Reg(Register, Login_rb, linearLayout, false);
             Login_rb.Click += (o, e) => Reg(Register, Login_rb, linearLayout, true);
@@ -285,6 +291,42 @@ namespace Client_App_Android
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
+        void CreateNotificationChannel()
+        {
+            if (Build.VERSION.SdkInt < BuildVersionCodes.O)
+            {
+                // Notification channels are new in API 26 (and not a part of the
+                // support library). There is no need to create a notification
+                // channel on older versions of Android.
+                return;
+            }
+
+            var name = "My channel";
+            var description = "Example)";
+            var channel = new NotificationChannel("location_notification", name, NotificationImportance.Default)
+            {
+                Description = description
+            };
+
+            var notificationManager = (NotificationManager)GetSystemService(NotificationService);
+            notificationManager.CreateNotificationChannel(channel);
+        }
+
+        void SendNotify(string title, string content)
+        {
+            var builder = new NotificationCompat.Builder(this, "location_notification")
+                          .SetAutoCancel(true) // Dismiss the notification from the notification area when the user clicks on it
+                          .SetContentTitle(title) // Set the title
+                          .SetSmallIcon(Resource.Drawable.Notifi)
+                          .SetContentText(content); // the message to display.
+
+            // Finally, publish the notification:
+            var notificationManager = NotificationManagerCompat.From(this);
+            notificationManager.Notify(1000, builder.Build());
+
+            // Increment the button press count:
         }
     }
 }
