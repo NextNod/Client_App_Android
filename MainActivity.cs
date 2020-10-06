@@ -10,6 +10,7 @@ using System;
 using Android.Support.V4.App;
 using System.Security.Cryptography;
 using Android.Views;
+using Android.Graphics;
 
 namespace Client_App_Android
 {
@@ -150,24 +151,39 @@ namespace Client_App_Android
 
                 if (radio.Checked)
                 {
+                    string salt = GenSalt(16);
+
                     sendData(stream, "reg");
                     getData(stream);
                     sendData(stream, log.Text);
                     getData(stream);
-                    sendData(stream, pass.Text);
+                    sendData(stream, ComputePasswordHash(pass.Text, salt));
+                    getData(stream);
+                    sendData(stream, salt);
                     getData(stream);
                     sendData(stream, email.Text);
-                    getData(stream);
+                    string msg = getData(stream);
+
+                    if (msg.Contains("{ER1}")) 
+                    {
+                        Toast toast = Toast.MakeText(BaseContext, msg.Substring(5), ToastLength.Short);
+                        toast.Show();
+
+                        stream.Close();
+                        client.Close();
+
+                        return;
+                    }
 
                     stream.Close();
                     client.Close();
-
-                    client = new TcpClient(server, port);
-                    stream = client.GetStream();
                     reg = true;
                 }
                 else if(!radio.Checked || reg)
                 {
+                    client = new TcpClient(server, port);
+                    stream = client.GetStream();
+
                     sendData(stream, "log");
                     getData(stream);
                     sendData(stream, log.Text);
@@ -290,6 +306,7 @@ namespace Client_App_Android
 
         // Подвал!
 
+
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -321,10 +338,11 @@ namespace Client_App_Android
         void SendNotify(string title, string content)
         {
             var builder = new NotificationCompat.Builder(this, "location_notification")
-                          .SetAutoCancel(true) // Dismiss the notification from the notification area when the user clicks on it
-                          .SetContentTitle(title) // Set the title
-                          .SetSmallIcon(Resource.Drawable.Notifi)
-                          .SetContentText(content); // the message to display.
+                .SetAutoCancel(true) // Dismiss the notification from the notification area when the user clicks on it
+                .SetContentTitle(title) // Set the title
+                .SetSmallIcon(Resource.Mipmap.ic_launcher_foreground)
+                .SetLargeIcon(BitmapFactory.DecodeResource(Resources, Resource.Drawable.N))
+                .SetContentText(content); // the message to display.
 
             var notificationManager = NotificationManagerCompat.From(this);
             notificationManager.Notify(1000, builder.Build());
@@ -337,6 +355,21 @@ namespace Client_App_Android
             if (password == null || salt == null)
                 return null;
             return BitConverter.ToString(SHA.ComputeHash(Encoding.UTF8.GetBytes(password + salt))).Replace("-", "").ToLower();
+        }
+
+        string GenSalt(int length)
+        {
+            RNGCryptoServiceProvider p = new RNGCryptoServiceProvider();
+            var salt = new byte[length];
+            p.GetBytes(salt);
+            return Convert.ToBase64String(salt);
+        }
+
+        protected override void OnStop()
+        {
+            base.OnStop();
+
+            SendNotify("System", "Application work in backround!");
         }
     }
 }
