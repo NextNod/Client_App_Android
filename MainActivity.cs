@@ -317,12 +317,7 @@ namespace Client_App_Android
         void CreateNotificationChannel()
         {
             if (Build.VERSION.SdkInt < BuildVersionCodes.O)
-            {
-                // Notification channels are new in API 26 (and not a part of the
-                // support library). There is no need to create a notification
-                // channel on older versions of Android.
                 return;
-            }
 
             var name = "My channel";
             var description = "Example)";
@@ -337,9 +332,12 @@ namespace Client_App_Android
 
         void SendNotify(string title, string content)
         {
+            PendingIntent pending = PendingIntent.GetActivity(this, 0, new Intent(this, typeof(MainActivity)), PendingIntentFlags.OneShot);
+
             var builder = new NotificationCompat.Builder(this, "location_notification")
                 .SetAutoCancel(true) // Dismiss the notification from the notification area when the user clicks on it
                 .SetContentTitle(title) // Set the title
+                .SetContentIntent(pending)
                 .SetSmallIcon(Resource.Mipmap.ic_launcher_foreground)
                 .SetLargeIcon(BitmapFactory.DecodeResource(Resources, Resource.Drawable.N))
                 .SetContentText(content); // the message to display.
@@ -354,6 +352,7 @@ namespace Client_App_Android
 
             if (password == null || salt == null)
                 return null;
+
             return BitConverter.ToString(SHA.ComputeHash(Encoding.UTF8.GetBytes(password + salt))).Replace("-", "").ToLower();
         }
 
