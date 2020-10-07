@@ -66,6 +66,8 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActivityList.cs" />
+    <Compile Include="ButtonNotifi.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -168,9 +170,7 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\SendEditText.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\NotifiIcon\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\Notifi.png" />
   </ItemGroup>

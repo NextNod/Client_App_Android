@@ -54,7 +54,7 @@ namespace Client_App_Android
             }
 
             CreateNotificationChannel();
-            SendNotify("Hello!", "This is my firts notification!");
+            SendNotify("Hello!", "This is my first notification!", (new Random()).Next());
 
             Register.Click += (o, e) => Reg(Register, Login_rb, linearLayout, false);
             Login_rb.Click += (o, e) => Reg(Register, Login_rb, linearLayout, true);
@@ -330,20 +330,21 @@ namespace Client_App_Android
             notificationManager.CreateNotificationChannel(channel);
         }
 
-        void SendNotify(string title, string content)
+        void SendNotify(string title, string content, int id_notification)
         {
-            PendingIntent pending = PendingIntent.GetActivity(this, 0, new Intent(this, typeof(MainActivity)), PendingIntentFlags.OneShot);
+            PendingIntent pending = PendingIntent.GetActivity(this, 0, new Intent(this, typeof(ButtonNotifi)), PendingIntentFlags.OneShot);
 
             var builder = new NotificationCompat.Builder(this, "location_notification")
                 .SetAutoCancel(true) // Dismiss the notification from the notification area when the user clicks on it
                 .SetContentTitle(title) // Set the title
                 .SetContentIntent(pending)
-                .SetSmallIcon(Resource.Mipmap.ic_launcher_foreground)
+                .SetSmallIcon(Resource.Mipmap.ic_launcher)
                 .SetLargeIcon(BitmapFactory.DecodeResource(Resources, Resource.Drawable.N))
+                .AddAction(Resource.Mipmap.ic_launcher, "example", pending)
                 .SetContentText(content); // the message to display.
 
             var notificationManager = NotificationManagerCompat.From(this);
-            notificationManager.Notify(1000, builder.Build());
+            notificationManager.Notify(id_notification, builder.Build());
         }
 
         string ComputePasswordHash(string password, string salt)
@@ -368,7 +369,8 @@ namespace Client_App_Android
         {
             base.OnStop();
 
-            SendNotify("System", "Application work in backround!");
+            SendNotify("System", "Application work in backround!", (new Random()).Next());
+
         }
     }
 }

@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/buttonstyle"
                 android:textColor="#f3f3f3"
-                android:layout_marginRight="20dp" 
+                android:layout_marginRight="20dp"
                 android:id="@+id/test" />
         </LinearLayout>
     </LinearLayout>
