@@ -29,6 +29,17 @@ namespace Client_App_Android
         {
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
+
+            try
+            {
+                if (!Intent.Extras.IsEmpty)
+                {
+                    dserver = Intent.Extras.GetString("server");
+                    dport = Intent.Extras.GetInt("port");
+                }
+            }
+            catch { }
+
             main();
         }
 
@@ -73,8 +84,9 @@ namespace Client_App_Android
             {
                 case Resource.Id.action_search:
                 {
-                    Settings(); 
-                    return true;
+                        Intent intent = new Intent(BaseContext, typeof(Settings));
+                        StartActivity(intent);
+                        return true;
                 }
                 case Resource.Id.action_search1:
                 {
@@ -94,35 +106,6 @@ namespace Client_App_Android
             }
 
             return base.OnOptionsItemSelected(item);
-        }
-
-        public void Settings() 
-        {
-            SetContentView(Resource.Layout.Settings);
-
-            FindViewById<Button>(Resource.Id.backToMain).Click += (o, e) => main();
-
-            FindViewById<Button>(Resource.Id.defaultButton).Click += (o, e) =>
-            {
-                server = "nextrun.mykeenetic.by";
-                port = 801;
-
-                Toast toast = Toast.MakeText(BaseContext, "Settings saved!", ToastLength.Short);
-                toast.Show();
-
-                layout1();
-            };
-
-            FindViewById<Button>(Resource.Id.Save_settings).Click += (o, e) =>
-            {
-                dserver = FindViewById<EditText>(Resource.Id.sAddres).Text;
-                dport = Convert.ToInt32(FindViewById<EditText>(Resource.Id.sPort).Text);
-
-                Toast toast = Toast.MakeText(BaseContext, "Settings saved!", ToastLength.Short);
-                toast.Show();
-
-                layout1();
-            };
         }
 
         protected void Reg(RadioButton reg, RadioButton log, LinearLayout linear, bool logrb)
@@ -145,12 +128,12 @@ namespace Client_App_Android
         {
             try
             {
-                TcpClient client = new TcpClient(server, port);
-                NetworkStream stream = client.GetStream();
                 bool reg = false;
 
                 if (radio.Checked)
                 {
+                    TcpClient client = new TcpClient(server, port);
+                    NetworkStream stream = client.GetStream();
                     string salt = GenSalt(16);
 
                     sendData(stream, "reg");
@@ -181,8 +164,8 @@ namespace Client_App_Android
                 }
                 else if(!radio.Checked || reg)
                 {
-                    client = new TcpClient(server, port);
-                    stream = client.GetStream();
+                    TcpClient client = new TcpClient(server, port);
+                    NetworkStream stream = client.GetStream();
 
                     sendData(stream, "log");
                     getData(stream);
@@ -215,11 +198,19 @@ namespace Client_App_Android
                     }
 
                     key = msg;
+                    stream.Close();
+                    client.Close();
                 }
 
-                stream.Close();
-                client.Close();
-                layout1(); // Переход
+                Bundle bundle = new Bundle();
+                bundle.PutString("key", key);
+                bundle.PutString("server", server);
+                bundle.PutInt("port", port);
+
+                Intent intent = new Intent(BaseContext, typeof(Actions));
+                intent.PutExtra("data", bundle);
+                StartActivity(intent); // Переход
+                Finish();
             }
             catch (Exception ex)
             {
@@ -231,7 +222,14 @@ namespace Client_App_Android
         {
             byte[] vs = new byte[255];
             stream.Read(vs, 0, vs.Length);
-            return Encoding.UTF8.GetString(vs);
+            string temp = Encoding.UTF8.GetString(vs), res = "";
+
+            for (int i = 0; temp[i] != '\0'; i++) 
+            {
+                res += temp[i];
+            }
+
+            return res;
         }
 
         protected void sendData(NetworkStream stream, string data)
@@ -239,29 +237,6 @@ namespace Client_App_Android
             byte[] vs = new byte[255];
             vs = Encoding.UTF8.GetBytes(data);
             stream.Write(vs, 0, vs.Length);
-        }
-
-        protected void layout1() 
-        {
-            SetContentView(Resource.Layout.layout1);
-
-            Button sendButton = FindViewById<Button>(Resource.Id.sendButton);
-            Button viewButton = FindViewById<Button>(Resource.Id.viewButton);
-
-            sendButton.Click += (o, e) => sendMessage();
-            viewButton.Click += (o, e) => viewMessage();
-            FindViewById<Button>(Resource.Id.test).Click += (o, e) => SetContentView(Resource.Layout.ListOfMessages);
-        }
-
-        protected void sendMessage() 
-        {
-            SetContentView(Resource.Layout.Send);
-
-            FindViewById<Button>(Resource.Id.sendMessageButton).Click += (o, e) => {
-                string to = FindViewById<TextView>(Resource.Id.ed_to).Text;
-                string message = FindViewById<TextView>(Resource.Id.et_message).Text;
-                Send(to, message);
-            };
         }
 
         protected void Send(string to, string message) 
@@ -282,30 +257,9 @@ namespace Client_App_Android
             client.Close();
 
             Toast toast = Toast.MakeText(BaseContext, "Message sendet!", ToastLength.Long);
-            layout1();
         }
-
-        protected void viewMessage() 
-        {
-            SetContentView(Resource.Layout.Read);
-
-            TcpClient client = new TcpClient(server, port);
-            NetworkStream stream = client.GetStream();
-
-            sendData(stream, "messages");
-            getData(stream);
-            sendData(stream, key);
-            FindViewById<TextView>(Resource.Id.messagesView).Text = getData(stream);
-
-            stream.Close();
-            client.Close();
-
-            FindViewById<Button>(Resource.Id.back_to_act).Click += (o, e) => layout1();
-        }
-
 
         // Подвал!
-
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
@@ -332,7 +286,7 @@ namespace Client_App_Android
 
         void SendNotify(string title, string content, int id_notification)
         {
-            PendingIntent pending = PendingIntent.GetActivity(this, 0, new Intent(this, typeof(ButtonNotifi)), PendingIntentFlags.OneShot);
+            PendingIntent pending = PendingIntent.GetActivity(this, 0, new Intent(this, typeof(MainActivity)), PendingIntentFlags.OneShot);
 
             var builder = new NotificationCompat.Builder(this, "location_notification")
                 .SetAutoCancel(true) // Dismiss the notification from the notification area when the user clicks on it
