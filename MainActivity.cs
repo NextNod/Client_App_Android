@@ -18,6 +18,7 @@ namespace Client_App_Android
     public class MainActivity : AppCompatActivity
     {
         string key;
+        bool isEnter = false;
 
         string server = "nextrun.mykeenetic.by";
         int port = 801;
@@ -25,51 +26,71 @@ namespace Client_App_Android
         string dserver = "nextrun.mykeenetic.by";
         int dport = 801;
 
+        protected override void OnSaveInstanceState(Bundle outState)
+        {
+            outState.PutBoolean("state", isEnter);
+            outState.PutString("key", key);
+            outState.PutString("server", server);
+            outState.PutInt("port", port);
+
+            base.OnSaveInstanceState(outState);
+        }
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
 
-            try
+            if (savedInstanceState.GetBoolean("state"))
             {
-                if (!Intent.Extras.IsEmpty)
-                {
-                    dserver = Intent.Extras.GetString("server");
-                    dport = Intent.Extras.GetInt("port");
-                }
-            }
-            catch { }
+                Bundle bundle = new Bundle();
+                bundle.PutString("key", key);
+                bundle.PutString("server", server);
+                bundle.PutInt("port", port);
 
-            main();
-        }
-
-        protected void main() 
-        {
-            SetContentView(Resource.Layout.activity_main);
-
-            EditText Login_et = FindViewById<EditText>(Resource.Id.editText1);
-            EditText Pass = FindViewById<EditText>(Resource.Id.editText2);
-            EditText Email = FindViewById<EditText>(Resource.Id.editText3);
-            Button Enter = FindViewById<Button>(Resource.Id.button1);
-            RadioButton Register = FindViewById<RadioButton>(Resource.Id.radioButton1);
-            RadioButton Login_rb = FindViewById<RadioButton>(Resource.Id.radioButton2);
-            LinearLayout linearLayout = FindViewById<LinearLayout>(Resource.Id.linearLayout3);
-
-            if (Register.Checked)
-            {
-                linearLayout.Visibility = Android.Views.ViewStates.Visible;
+                Intent intent = new Intent(BaseContext, typeof(Actions));
+                intent.PutExtra("data", bundle);
+                isEnter = true;
+                StartActivity(intent);
+                Finish();
             }
             else
             {
-                linearLayout.Visibility = Android.Views.ViewStates.Invisible;
+                SetContentView(Resource.Layout.activity_main);
+                try
+                {
+                    if (!Intent.Extras.IsEmpty)
+                    {
+                        dserver = Intent.Extras.GetString("server");
+                        dport = Intent.Extras.GetInt("port");
+                    }
+                }
+                catch { }
+
+                EditText Login_et = FindViewById<EditText>(Resource.Id.editText1);
+                EditText Pass = FindViewById<EditText>(Resource.Id.editText2);
+                EditText Email = FindViewById<EditText>(Resource.Id.editText3);
+                Button Enter = FindViewById<Button>(Resource.Id.button1);
+                RadioButton Register = FindViewById<RadioButton>(Resource.Id.radioButton1);
+                RadioButton Login_rb = FindViewById<RadioButton>(Resource.Id.radioButton2);
+                LinearLayout linearLayout = FindViewById<LinearLayout>(Resource.Id.linearLayout3);
+
+                if (Register.Checked)
+                {
+                    linearLayout.Visibility = Android.Views.ViewStates.Visible;
+                }
+                else
+                {
+                    linearLayout.Visibility = Android.Views.ViewStates.Invisible;
+                }
+
+                CreateNotificationChannel();
+                SendNotify("Hello!", "This is my first notification!", (new Random()).Next());
+
+                Register.Click += (o, e) => Reg(Register, Login_rb, linearLayout, false);
+                Login_rb.Click += (o, e) => Reg(Register, Login_rb, linearLayout, true);
+                Enter.Click += (o, e) => Event(Register, Login_et, Pass, Email);
             }
-
-            CreateNotificationChannel();
-            SendNotify("Hello!", "This is my first notification!", (new Random()).Next());
-
-            Register.Click += (o, e) => Reg(Register, Login_rb, linearLayout, false);
-            Login_rb.Click += (o, e) => Reg(Register, Login_rb, linearLayout, true);
-            Enter.Click += (o, e) => Event(Register, Login_et, Pass, Email);
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu) 
@@ -209,6 +230,7 @@ namespace Client_App_Android
 
                 Intent intent = new Intent(BaseContext, typeof(Actions));
                 intent.PutExtra("data", bundle);
+                isEnter = true;
                 StartActivity(intent); // Переход
                 Finish();
             }

@@ -23,12 +23,10 @@ namespace Client_App_Android
         {
             base.OnCreate(savedInstanceState);
             Bundle bundle = Intent.Extras.GetBundle("data");
-
+            SetContentView(Resource.Layout.layout1);
             key = bundle.GetString("key");
             server = bundle.GetString("server");
             port = bundle.GetInt("port");
-
-            SetContentView(Resource.Layout.layout1);
 
             Button sendButton = FindViewById<Button>(Resource.Id.sendButton);
             Button viewButton = FindViewById<Button>(Resource.Id.viewButton);
